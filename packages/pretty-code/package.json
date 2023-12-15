@@ -2,7 +2,27 @@
   "name": "@svelte-dev/pretty-code",
   "version": "0.0.0",
   "author": "Willin Wang <willin@willin.org> (https://willin.wang/)",
+  "description": "Beautiful Svelte code blocks for Markdown or MDsveX.",
   "main": "./dist/index.js",
+  "keywords": [
+    "svelte",
+    "highlight",
+    "rehype",
+    "md",
+    "mdsvex"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/willin/svelte-pretty-code.git"
+  },
+  "bugs": {
+    "url": "https://github.com/willin/svelte-pretty-code/issues"
+  },
+  "homepage": "https://pretty-code.js.cool",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "rehype-pretty-code": "^0.12.1",
     "rehype-stringify": "^10.0.0",
@@ -20,15 +40,12 @@
       "default": "./dist/index.js"
     }
   },
-  "description": "",
   "files": [
     "LICENSE",
     "dist",
     "!dist/**/*.test.*",
     "!dist/**/*.spec.*"
   ],
-  "keywords": [],
-  "license": "Apache-2.0",
   "scripts": {
     "build": "tsc"
   },
