@@ -1,0 +1,29 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDotEnv": [".env.local", ".env"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "cache": true,
+      "outputs": [".svelte-kit/**", "dist/**"]
+    },
+    "@svelte-dev/pretty-code#build": {},
+    "build:docs": {
+      "dependsOn": ["build"],
+      "cache": true,
+      "outputs": [".svelte-kit/cloudflare/docs/**"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": ["build"],
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts"],
+      "outputMode": "full"
+    },
+    "lint": {},
+    "dev": {
+      "dependsOn": ["@svelte-dev/pretty-code#build"],
+      "cache": true,
+      "persistent": true
+    }
+  }
+}

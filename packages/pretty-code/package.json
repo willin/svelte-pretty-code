@@ -1,0 +1,37 @@
+{
+  "name": "@svelte-dev/pretty-code",
+  "version": "0.0.0",
+  "author": "Willin Wang <willin@willin.org> (https://willin.wang/)",
+  "main": "./dist/index.js",
+  "dependencies": {
+    "rehype-pretty-code": "^0.12.1",
+    "rehype-stringify": "^10.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.0.0",
+    "unified": "^11.0.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.2"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "description": "",
+  "files": [
+    "LICENSE",
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
+  ],
+  "keywords": [],
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts"
+}
