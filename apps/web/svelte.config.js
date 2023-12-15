@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/kit/vite';
+import { preprocessMeltUI } from '@melt-ui/pp';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
 
@@ -8,7 +9,7 @@ const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
   extensions: ['.svelte', ...mdsvexConfig.extensions],
-  preprocess: [mdsvex(mdsvexConfig), vitePreprocess()],
+  preprocess: [mdsvex(mdsvexConfig), vitePreprocess(), preprocessMeltUI()],
   // compilerOptions: {
   //   runes: true
   // },

@@ -19,6 +19,8 @@
     "theme-change": "^2.5.0"
   },
   "devDependencies": {
+    "@melt-ui/pp": "^0.1.4",
+    "@melt-ui/svelte": "^0.65.1",
     "@svelte-dev/eslint-config": "latest",
     "@sveltejs/adapter-cloudflare": "^2.3.3",
     "@sveltejs/kit": "^1.27.6",

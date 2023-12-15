@@ -1,15 +1,16 @@
-`[1, 2, 3]{:js}`
-
-```js title="hello"
-const numbers = [1, 2, 3];
-console.log('test');
-```
-
 ---
+title: '@svelte-dev/pretty-code'
+desc: 'Beautiful Svelte code blocks for Markdown or MDsveX.'
+---
+
+> []`@svelte-dev/pretty-code`](https://github.com/willin/svelte-pretty-code) is a MDsveX highlight plugin powered by [rehype-pretty-code](https://github.com/atomiks/rehype-pretty-code) and [shikiji](https://github.com/antfu/shikiji). The syntax highlighter that provides beautiful code blocks for Markdown or MDsveX. It only works on `Block Codes` (not `Inline codes`).
 
 ## Editor-Grade Highlighting
 
-```tsx
+> Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and
+> the popularity of its themes ecosystem — use any VS Code theme you want!
+
+```tsx title="demo.tsx"
 import { useFloating, offset } from '@floating-ui/react';
 
 interface Props {
@@ -41,7 +42,7 @@ export function App({ open, onOpenChange }: Props) {
 
 Draw attention to a particular line of code.
 
-```js {4} showLineNumbers
+```js caption="Caption" {4} showLineNumbers
 import { useFloating } from '@floating-ui/react';
 
 function MyComponent() {
@@ -74,26 +75,6 @@ function MyComponent() {
   );
 }
 ```
-
-## Inline Code Highlighting
-
-The result of `[1, 2, 3].join('-'){:js}` is `'1-2-3'{:js}`.
-
-### Context Aware Inline Code
-
-For instance, if you had the following code block:
-
-```js
-function getStringLength(str) {
-  return str.length;
-}
-```
-
-When we refer to `getStringLength{:.entity.name.function}` as a plain variable,
-we can color it as a function. Same with `function{:.keyword}`, or
-`str{:.variable.parameter}` vs. `str{:.variable.other.object}`, etc. This allows
-you to semantically tie inline code with the nearest code block it's referring
-to.
 
 ## ANSI Highlighting
 
@@ -315,9 +296,9 @@ Code blocks are configured via the meta string on the top codeblock fence.
 Place a numeric range inside `{}`.
 
 ````md
-```js {1-3,4}
+\```js {1-3,4}
 
-```
+\```
 ````
 
 The line `<span>{:html}` receives a `data-highlighted-line` attribute to style
@@ -329,9 +310,9 @@ Place an id after `#` after the `{}`. This allows you to color or style lines
 differently based on their id.
 
 ````md
-```js {1,2}#a {3,4}#b
+\```js {1,2}#a {3,4}#b
 
-```
+\```
 ````
 
 The line `<span>{:html}` receives a `data-highlighted-line-id="<id>"` attribute
@@ -342,25 +323,24 @@ to style via CSS.
 You can use either `/`:
 
 ````md
-```js /carrot/
+\```js /carrot/
 
-```
+\```
 ````
 
 Or `"` as a delimiter:
 
 ````md
-```js "carrot"
-
-```
+\```js "carrot"
+\```
 ````
 
 Different segments of chars can also be highlighted:
 
 ````md
-```js /carrot/ /apple/
+\```js /carrot/ /apple/
 
-```
+\```
 ````
 
 The chars `<span>{:html}` receives a `data-highlighted-chars` attribute to style
@@ -370,18 +350,18 @@ To highlight only the third to fifth instances of `carrot`, a numeric range can
 be placed after the last `/`.
 
 ````md
-```js /carrot/3-5
+\```js /carrot/3-5
 
-```
+\```
 ````
 
 Highlight only the third to fifth instances of `carrot` and any instances of
 `apple`.
 
 ````md
-```js /carrot/3-5 /apple/
+\```js /carrot/3-5 /apple/
 
-```
+\```
 ````
 
 #### Group Highlighted Chars By Id
@@ -390,10 +370,10 @@ Place an id after `#` after the chars. This allows you to color chars
 differently based on their id.
 
 ````md
-```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /'Taylor'/#i
+\```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /'Taylor'/#i
 const [age, setAge] = useState(50);
 const [name, setName] = useState('Taylor');
-```
+\```
 ````
 
 ```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /'Taylor'/#i
@@ -404,47 +384,14 @@ const [name, setName] = useState('Taylor');
 The chars `<span>{:html}` receives a `data-chars-id="<id>"` attribute to style
 via CSS.
 
-#### Highlight Inline Code
-
-Append `\{:lang}` (e.g. `\{:js}`) to the end of inline code to highlight it like
-a regular code block.
-
-```md
-This is an array `[1, 2, 3]{:js}` of numbers 1 through 3.
-```
-
-#### Highlight Plain Text
-
-Append `\{:.token}` to the end of the inline code to highlight it based on a
-token specified in your VS Code theme. Tokens start with a `.` to differentiate
-them from a language.
-
-```md
-The name of the function is `getStringLength{:.entity.name.function}`.
-```
-
-You can create a map of tokens to shorten this usage throughout your docs:
-
-```js
-const options = {
-  tokensMap: {
-    fn: 'entity.name.function'
-  }
-};
-```
-
-```md
-The name of the function is `getStringLength{:.fn}`.
-```
-
 #### Titles
 
 Add a file title to your code block, with text inside double quotes (`""`):
 
 ````md
-```js title="..."
+\```js title="..."
 
-```
+\```
 ````
 
 #### Captions
@@ -452,9 +399,9 @@ Add a file title to your code block, with text inside double quotes (`""`):
 Add a caption underneath your code block, with text inside double quotes (`""`):
 
 ````md
-```js caption="..."
+\```js caption="..."
 
-```
+\```
 ````
 
 ### Line Numbers
@@ -490,9 +437,9 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 If you want to conditionally show them, use `showLineNumbers`:
 
 ````md
-```js showLineNumbers
+\```js showLineNumbers
 
-```
+\```
 ````
 
 `<code>{:html}` will have attributes `data-line-numbers` and
@@ -502,9 +449,9 @@ If you want to start line numbers at a specific number, use
 `showLineNumbers{number}`:
 
 ````md
-```js showLineNumbers{number}
+\```js showLineNumbers{number}
 
-```
+\```
 ````
 
 ### Multiple Themes (Dark and Light Mode)

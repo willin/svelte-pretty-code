@@ -1,3 +1,251 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  user-select: none;
+  cursor: url('https://willin.wang/images/default.cur'), default;
+}
+
+pre[data-theme*=' '],
+pre[data-theme*=' '] span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+[data-theme='dark'] pre[data-theme*=' '],
+[data-theme='dark'] pre[data-theme*=' '] span,
+[data-theme='synthwave'] pre[data-theme*=' '],
+[data-theme='synthwave'] pre[data-theme*=' '] span,
+[data-theme='halloween'] pre[data-theme*=' '],
+[data-theme='halloween'] pre[data-theme*=' '] span,
+[data-theme='forest'] pre[data-theme*=' '],
+[data-theme='forest'] pre[data-theme*=' '] span,
+[data-theme='black'] pre[data-theme*=' '],
+[data-theme='black'] pre[data-theme*=' '] span,
+[data-theme='luxury'] pre[data-theme*=' '],
+[data-theme='luxury'] pre[data-theme*=' '] span,
+[data-theme='dracula'] pre[data-theme*=' '],
+[data-theme='dracula'] pre[data-theme*=' '] span,
+[data-theme='business'] pre[data-theme*=' '],
+[data-theme='business'] pre[data-theme*=' '] span,
+[data-theme='night'] pre[data-theme*=' '],
+[data-theme='night'] pre[data-theme*=' '] span,
+[data-theme='coffee'] pre[data-theme*=' '],
+[data-theme='coffee'] pre[data-theme*=' '] span,
+[data-theme='dim'] pre[data-theme*=' '],
+[data-theme='dim'] pre[data-theme*=' '] span,
+[data-theme='sunset'] pre[data-theme*=' '],
+[data-theme='sunset'] pre[data-theme*=' '] span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+
+a,
+a *,
+button,
+button *,
+.btn,
+.btn *,
+.prose .post-image,
+.cursor-pointer * {
+  cursor: url('https://willin.wang/images/pointer.cur'), pointer;
+}
+
+html {
+  /* transition: background-color 0.5s linear, color 0.25s linear; */
+  min-height: 100vh;
+  user-select: none;
+}
+
+div,
+p {
+  @apply break-all;
+  user-select: none;
+}
+
+pre {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  user-select: none;
+}
+
+/* Remove Safari input shadow on mobile */
+input[type='text'],
+input[type='email'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.break-words,
+.break-words p {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+table {
+  display: block;
+  max-width: fit-content;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* .anchor:hover {
+  @apply visible;
+}
+
+.prose .anchor:after {
+  content: '#';
+}
+
+.prose *:hover > .anchor {
+  @apply visible;
+}
+
+.prose .anchor {
+  @apply absolute invisible no-underline text-secondary max-w-full;
+  margin-left: -1.5rem;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: left;
+  height: max-content;
+} */
+
+.prose img {
+  /* Don't apply styles to next/image */
+  @apply m-0;
+}
+
+.prose code {
+  @apply text-accent rounded;
+}
+
+code[class*='language-'],
+pre[class*='language-'] {
+  @apply text-neutral-50;
+}
+
+.prose {
+  @apply min-w-full;
+}
+.prose > * {
+  @apply min-w-[95%] w-full lg:w-[95%] mx-auto;
+}
+.prose h1 a,
+.prose h2 a {
+  @apply block text-primary-content bg-primary border-primary mx-auto shadow-lg text-center w-full py-1 rounded;
+}
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a,
+.prose h5 a,
+.prose h6 a {
+  @apply no-underline;
+}
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  @apply text-secondary-content relative;
+}
+.prose table {
+  @apply min-w-[95%] w-full lg:w-[95%] table-zebra shadow mx-auto table-md;
+  display: table;
+}
+
+.prose tr {
+  @apply hover;
+}
+[data-rehype-pretty-code-fragment] {
+  @apply relative min-w-[95%] w-full lg:w-[95%] mx-auto rounded shadow-lg;
+}
+[data-rehype-pretty-code-fragment] code {
+  @apply grid break-words border-0 bg-transparent p-0 text-sm text-black;
+  counter-reset: line;
+  box-decoration-break: clone;
+}
+[data-rehype-pretty-code-fragment] pre {
+  @apply mx-auto p-4;
+}
+[data-rehype-pretty-code-fragment] code * {
+  user-select: text;
+}
+[data-rehype-pretty-code-fragment] .line {
+  @apply py-1;
+}
+[data-rehype-pretty-code-fragment] [data-line-numbers] > .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: gray;
+}
+
+[data-rehype-pretty-code-title] {
+  @apply px-4 py-3 font-mono text-xs font-medium border rounded-t-lg text-secondary-content bg-secondary border-secondary;
+}
+
+[data-rehype-pretty-code-caption] {
+  @apply !m-0 px-4 py-3 font-mono text-xs font-medium border rounded-b-lg text-accent-content bg-accent border-accent;
+}
+
+[data-rehype-pretty-code-title] ~ [data-language-icon] {
+  @apply block;
+}
+
+[data-rehype-pretty-code-title] ~ pre {
+  @apply mt-0 rounded-t-none border-t-0;
+}
+
+[data-rehype-pretty-code-fragment] .line--highlighted {
+  @apply bg-secondary bg-opacity-10;
+}
+[data-rehype-pretty-code-fragment] .line-highlighted span {
+  @apply relative;
+}
+[data-rehype-pretty-code-fragment] .word--highlighted {
+  @apply rounded-md bg-secondary bg-opacity-10 p-1;
+}
+
+[data-highlighted-line] {
+  @apply !bg-primary/30;
+}
+[data-highlighted-line] * {
+  @apply !bg-transparent;
+}
+
+[data-highlighted-chars] {
+  @apply p-1 bg-secondary/70 shadow shadow-secondary;
+}
+[data-highlighted-chars] span {
+  @apply !bg-transparent !text-secondary-content;
+}
+
+[data-chars-id='v'] span {
+  @apply !text-pink-300 bg-rose-800/50 border-b-pink-600 font-bold;
+}
+
+[data-chars-id='s'] span {
+  @apply !text-yellow-300 bg-yellow-800/50 border-b-yellow-600 font-bold;
+}
+
+[data-chars-id='i'] span {
+  @apply !text-purple-200 bg-purple-800/50 border-b-purple-600 font-bold;
+}
+
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-4 mr-4 text-right text-gray-500;
+}
