@@ -3,12 +3,12 @@ title: '@svelte-dev/pretty-code'
 desc: '一个漂亮的 Svelte MDsveX 代码高亮显示插件'
 ---
 
-> []`@svelte-dev/pretty-code`](https://github.com/willin/svelte-pretty-code) is a MDsveX highlight plugin powered by [rehype-pretty-code](https://github.com/atomiks/rehype-pretty-code) and [shikiji](https://github.com/antfu/shikiji). The syntax highlighter that provides beautiful code blocks for Markdown or MDsveX. It only works on `Block Codes` (not `Inline codes`).
+> [`@svelte-dev/pretty-code`](https://github.com/willin/svelte-pretty-code) 是一个由 [rehype-pretty-code](https://github.com/atomiks/rehype-pretty-code) 和 [shikiji](https://github.com/antfu/shikiji) 提供支持的 MDsveX 高亮插件。这个语法高亮器为 Markdown 或 MDsveX 提供了漂亮的代码块。它只适用于 `块代码`（不适用于 `内联代码`）。
 
-## Editor-Grade Highlighting
+## 编辑器级高亮
 
-> Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and
-> the popularity of its themes ecosystem — use any VS Code theme you want!
+> 享受 VS Code 语法高亮引擎的准确性和粒度，
+> 以及其主题生态系统的流行 —— 使用任何你想要的 VS Code 主题！
 
 ```tsx title="demo.tsx"
 import { useFloating, offset } from '@floating-ui/react';
@@ -35,12 +35,9 @@ export function App({ open, onOpenChange }: Props) {
 }
 ```
 
-> The theme is [Moonlight II](https://github.com/atomiks/moonlight-vscode-theme)
-> with a custom background color.
+## 行号和行高亮
 
-## Line Numbers and Line Highlighting
-
-Draw attention to a particular line of code.
+将注意力引向特定的代码行。
 
 ```js caption="Caption" {4} showLineNumbers
 import { useFloating } from '@floating-ui/react';
@@ -57,9 +54,9 @@ function MyComponent() {
 }
 ```
 
-## Word Highlighting
+## 单词高亮
 
-Draw attention to a particular word or series of characters.
+将注意力引向特定的单词或字符序列。
 
 ```js /floatingStyles/
 import { useFloating } from '@floating-ui/react';
@@ -76,7 +73,7 @@ function MyComponent() {
 }
 ```
 
-## ANSI Highlighting
+## ANSI 高亮
 
 ```bash
 [0;36m  vite v5.0.0[0;32m dev server running at:[0m
@@ -89,94 +86,51 @@ function MyComponent() {
 [0;2m8:38:02 PM[0m [0;36;1m[vite][0m [0;32mhmr update [0;2m/src/App.jsx
 ```
 
-Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
+## 安装
 
-## Installation
-
-Install via your terminal:
+通过终端进行安装：
 
 ```shell
-npm install rehype-pretty-code shikiji@^0.8.0
+npm add @svelte-dev/pretty-code
 ```
 
-This package is ESM-only and currently supports `shikiji{:.string}`
-`^0.7.0 || ^0.8.0{:.string}`.
+此包仅支持 ESM，并且当前支持 `shikiji` `^0.7.0 || ^0.8.0`。
 
-> **Note:** If you need `CJS` support you should use
-> `rehype-pretty-code@0.10.1{:.string}`, which uses Shiki instead of Shikiji
-> ([v0.10.1 docs here](https://github.com/atomiks/rehype-pretty-code/blob/00e5451e3aac7b86f748b01267e255bf345d1550/website/src/app/index.mdx)).
-> To use the latest version in Next.js, ensure your config file is `ESM`:
-> `next.config.mjs`. Here's a full example:
-> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)
+## 使用
 
-## Usage
+以下在服务器和客户端上都可以工作。
 
-The following works both on the server and on the client.
+> `unified@11` 被用作依赖项。
 
-> `unified@11{:.string}` is used as a dependency.
+```js /createHighlighter/
+import { defineMDSveXConfig as defineConfig } from 'mdsvex';
+import { createHighlighter } from '@svelte-dev/pretty-code';
 
-```js /rehypePrettyCode/
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import rehypePrettyCode from 'rehype-pretty-code';
+const config = defineConfig({
+  extensions: ['.svelte.md', '.md', '.svx'],
 
-async function main() {
-  const file = await unified()
-    .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypePrettyCode, {
-      // See Options section below.
+  highlight: {
+    highlighter: createHighlighter({
+      // keepBackground: false,
+      theme: {
+        dark: 'solarized-dark',
+        light: 'solarized-light'
+      }
     })
-    .use(rehypeStringify)
-    .process('`const numbers = [1, 2, 3]{:js}`');
-
-  console.log(String(file));
-}
-
-main();
-```
-
-### MDX
-
-The following example shows how to use this package with Next.js.
-
-```js title="next.config.mjs"
-import fs from 'node:fs';
-import nextMDX from '@next/mdx';
-import rehypePrettyCode from 'rehype-pretty-code';
-
-/** @type {import('rehype-pretty-code').Options} */
-const options = {
-  // See Options section below.
-};
-
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [[rehypePrettyCode, options]]
   }
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = { reactStrictMode: true };
-
-export default withMDX(nextConfig);
+export default config;
 ```
 
-> **Make sure you have disabled** the `mdxRs{:.meta.object-literal.key}` option
-> for Next.js 13 / app dir, as it currently does not support Rehype plugins.
-
-## Options
+## 选项
 
 ```ts
 interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
-  defaultLang?: string | { block?: string; inline?: string };
+  defaultLang?: string;
   tokensMap?: Record<string, string>;
   transformers?: ShikijiTransformer[];
   filterMetaString?(str: string): string;
@@ -189,12 +143,11 @@ interface Options {
 }
 ```
 
-### `grid{:.meta.object-literal.key}`
+### `grid`
 
-A grid style is present by default which allows line highlighting to span the
-entire width of a horizontally-scrollable code block.
+默认情况下存在一个网格样式，允许行高亮跨越水平滚动的代码块的整个宽度。
 
-You can disable this setting if necessary:
+如果需要，你可以禁用此设置：
 
 ```js
 const options = {
@@ -202,11 +155,11 @@ const options = {
 };
 ```
 
-### `theme{:.meta.object-literal.key}`
+### `theme`
 
-The default theme is `github-dark-dimmed{:.string}`. Shikiji has a bunch of
-[pre-packaged themes](https://github.com/antfu/shikiji/blob/main/docs/themes.md),
-which can be specified as a plain string:
+默认主题是 `github-dark-dimmed`。Shikiji 有一堆
+[预打包的主题](https://github.com/antfu/shikiji/blob/main/docs/themes.md)，
+可以指定为一个简单的字符串：
 
 ```js
 const options = {
@@ -214,7 +167,7 @@ const options = {
 };
 ```
 
-You can use your own theme as well by passing the theme JSON:
+你也可以通过传递主题 JSON 来使用你自己的主题：
 
 ```js
 const options = {
@@ -224,10 +177,9 @@ const options = {
 };
 ```
 
-### `keepBackground{:.meta.object-literal.key}`
+### `keepBackground`
 
-To apply a custom background instead of inheriting the background from the
-theme:
+要应用自定义背景，而不是从主题继承背景：
 
 ```js
 const options = {
@@ -235,12 +187,9 @@ const options = {
 };
 ```
 
-### `defaultLang{:.meta.object-literal.key}`
+### `defaultLang`
 
-When no code language is specified, inline code or code blocks will not be
-themed (nor will the background), which may appear incongruous with others.
-
-In this case, you can specify a default language:
+你可以指定一个默认语言：
 
 ```js
 const options = {
@@ -248,25 +197,11 @@ const options = {
 };
 ```
 
-Or you can also specify default languages for inline code and code blocks
-separately:
+### `transformers`
 
-```js
-const options = {
-  defaultLang: {
-    block: 'plaintext',
-    inline: 'plaintext'
-  }
-};
-```
-
-### `transformers{:.meta.object-literal.key}`
-
-[Transformers](https://github.com/antfu/shikiji#hast-transformers) are a
-Shikiji-native way to manipulate the `hAST` tree of the code blocks and further
-extend the behavior of this plugin. The
-[`shikiji-transformers`](https://www.npmjs.com/package/shikiji-transformers)
-package provides some useful transformers.
+[Transformers](https://github.com/antfu/shikiji#hast-transformers) 是一种
+Shikiji-native 的方式来操作代码块的 `hAST` 树，并进一步扩展此插件的行为。[`shikiji-transformers`](https://www.npmjs.com/package/shikiji-transformers)
+包提供了一些有用的 transformers。
 
 ```js
 import { transformerNotationDiff } from 'shikiji-transformers';
@@ -278,12 +213,11 @@ const options = {
 
 ### Meta Strings
 
-Code blocks are configured via the meta string on the top codeblock fence.
+通过顶部代码块围栏上的元字符串配置代码块。
 
-> If your library also parses code blocks' meta strings, it may
-> [cause conflicts](https://github.com/atomiks/rehype-pretty-code/issues/52)
-> with `rehype-pretty-code`. This option allows you to filter out some part of
-> the meta string before the library starts parsing it.
+> 如果你的库也解析代码块的元字符串，它可能会
+> [引起冲突](https://github.com/atomiks/rehype-pretty-code/issues/52)
+> 与 `rehype-pretty-code`。此选项允许你在库开始解析之前过滤掉元字符串的一部分。
 >
 > ```js
 > const options = {
@@ -291,9 +225,9 @@ Code blocks are configured via the meta string on the top codeblock fence.
 > };
 > ```
 
-#### Highlight Lines
+#### 高亮行
 
-Place a numeric range inside `{}`.
+在 `{}` 内放置一个数字范围。
 
 ````md
 \```js {1-3,4}
@@ -301,13 +235,11 @@ Place a numeric range inside `{}`.
 \```
 ````
 
-The line `<span>{:html}` receives a `data-highlighted-line` attribute to style
-via CSS.
+行 `<span>` 接收一个 `data-highlighted-line` 属性以通过 CSS 进行样式化。
 
-#### Group Highlighted Lines By Id
+#### 通过 Id 分组高亮行
 
-Place an id after `#` after the `{}`. This allows you to color or style lines
-differently based on their id.
+在 `{}` 后面放置一个 `#` 后面的 id。这允许你根据他们的 id 以不同的颜色或样式对行进行着色。
 
 ````md
 \```js {1,2}#a {3,4}#b
@@ -315,12 +247,12 @@ differently based on their id.
 \```
 ````
 
-The line `<span>{:html}` receives a `data-highlighted-line-id="<id>"` attribute
-to style via CSS.
+行 `<span>` 接收一个 `data-highlighted-line-id="<id>"` 属性
+以通过 CSS 进行样式化。
 
-#### Highlight Chars
+#### 高亮字符
 
-You can use either `/`:
+你可以使用 `/`：
 
 ````md
 \```js /carrot/
@@ -328,14 +260,14 @@ You can use either `/`:
 \```
 ````
 
-Or `"` as a delimiter:
+或者 `"` 作为分隔符：
 
 ````md
 \```js "carrot"
 \```
 ````
 
-Different segments of chars can also be highlighted:
+也可以高亮不同的字符段：
 
 ````md
 \```js /carrot/ /apple/
@@ -343,11 +275,9 @@ Different segments of chars can also be highlighted:
 \```
 ````
 
-The chars `<span>{:html}` receives a `data-highlighted-chars` attribute to style
-via CSS.
+字符 `<span>` 接收一个 `data-highlighted-chars` 属性以通过 CSS 进行样式化。
 
-To highlight only the third to fifth instances of `carrot`, a numeric range can
-be placed after the last `/`.
+要只高亮 `carrot` 的第三到第五个实例，可以在最后一个 `/` 后面放置一个数字范围。
 
 ````md
 \```js /carrot/3-5
@@ -355,8 +285,7 @@ be placed after the last `/`.
 \```
 ````
 
-Highlight only the third to fifth instances of `carrot` and any instances of
-`apple`.
+只高亮 `carrot` 的第三到第五个实例和 `apple` 的任何实例。
 
 ````md
 \```js /carrot/3-5 /apple/
@@ -364,10 +293,9 @@ Highlight only the third to fifth instances of `carrot` and any instances of
 \```
 ````
 
-#### Group Highlighted Chars By Id
+#### 通过 Id 分组高亮字符
 
-Place an id after `#` after the chars. This allows you to color chars
-differently based on their id.
+在字符后面放置一个 `#` 后面的 id。这允许你根据他们的 id 以不同的颜色对字符进行着色。
 
 ````md
 \```js /age/#v /name/#v /setAge/#s /setName/#s /50/#i /'Taylor'/#i
@@ -381,12 +309,11 @@ const [age, setAge] = useState(50);
 const [name, setName] = useState('Taylor');
 ```
 
-The chars `<span>{:html}` receives a `data-chars-id="<id>"` attribute to style
-via CSS.
+字符 `<span>` 接收一个 `data-chars-id="<id>"` 属性以通过 CSS 进行样式化。
 
-#### Titles
+#### 标题
 
-Add a file title to your code block, with text inside double quotes (`""`):
+在你的代码块中添加一个文件标题，文本在双引号 (`""`) 内：
 
 ````md
 \```js title="..."
@@ -394,9 +321,9 @@ Add a file title to your code block, with text inside double quotes (`""`):
 \```
 ````
 
-#### Captions
+#### 标题
 
-Add a caption underneath your code block, with text inside double quotes (`""`):
+在你的代码块下方添加一个标题，文本在双引号 (`""`) 内：
 
 ````md
 \```js caption="..."
@@ -404,9 +331,9 @@ Add a caption underneath your code block, with text inside double quotes (`""`):
 \```
 ````
 
-### Line Numbers
+### 行号
 
-CSS counters can be used to add line numbers.
+可以使用 CSS 计数器添加行号。
 
 ```css {2,6-7}
 code {
@@ -417,7 +344,7 @@ code > [data-line]::before {
   counter-increment: line;
   content: counter(line);
 
-  /* Other styling */
+  /* 其他样式 */
   display: inline-block;
   width: 1rem;
   margin-right: 2rem;
@@ -434,7 +361,7 @@ code[data-line-numbers-max-digits='3'] > [data-line]::before {
 }
 ```
 
-If you want to conditionally show them, use `showLineNumbers`:
+如果你想条件显示它们，使用 `showLineNumbers`：
 
 ````md
 \```js showLineNumbers
@@ -442,11 +369,11 @@ If you want to conditionally show them, use `showLineNumbers`:
 \```
 ````
 
-`<code>{:html}` will have attributes `data-line-numbers` and
-`data-line-numbers-max-digits="n"`.
+`<code>` 将具有属性 `data-line-numbers` 和
+`data-line-numbers-max-digits="n"`。
 
-If you want to start line numbers at a specific number, use
-`showLineNumbers{number}`:
+如果你想从特定的数字开始行号，使用
+`showLineNumbers{number}`：
 
 ````md
 \```js showLineNumbers{number}
@@ -454,10 +381,10 @@ If you want to start line numbers at a specific number, use
 \```
 ````
 
-### Multiple Themes (Dark and Light Mode)
+### 多主题（深色和浅色模式）
 
-Pass your themes to `theme{:.meta.object-literal.key}`, where the keys represent
-the color mode:
+将你的主题传递给 `theme`，其中键代表
+颜色模式：
 
 ```js
 const options = {
@@ -468,9 +395,8 @@ const options = {
 };
 ```
 
-Now, use the following CSS to display the variable colors — if a space is found
-in the theme name, then CSS variable keys based on the object are available
-([more info](https://github.com/antfu/shikiji#lightdark-dual-themes)):
+现在，使用以下 CSS 来显示变量颜色 —— 如果在主题名称中找到空格，那么基于对象的 CSS 变量键将可用
+([更多信息](https://github.com/antfu/shikiji#lightdark-dual-themes))：
 
 ```scss
 code[data-theme*=' '],
@@ -488,17 +414,17 @@ code[data-theme*=' '] span {
 }
 ```
 
-The `<code>{:html}` and `<pre>{:html}` elements will have the data attribute
-`data-theme="...themes"`, listing each theme value space-separated:
+`<code>` 和 `<pre>` 元素将具有数据属性
+`data-theme="...themes"`，列出每个主题值以空格分隔：
 
 ```html
 <code data-theme="github-dark-dimmed github-light"></code>
 ```
 
-### Visitor Hooks
+### 访问者钩子
 
-To customize the HTML output, you can use visitor callback hooks to manipulate
-the [hAST elements](https://github.com/syntax-tree/hast#element) directly:
+要自定义 HTML 输出，你可以使用访问者回调钩子直接操作
+[hAST 元素](https://github.com/syntax-tree/hast#element)：
 
 ```js
 const options = {
@@ -520,11 +446,10 @@ const options = {
 };
 ```
 
-### Custom Highlighter
+### 自定义高亮器
 
-To completely configure the highlighter, use the
-`getHighlighter{:.entity.name.function}` option. This is helpful if you'd like
-to configure other Shikiji options, such as `langs{:.meta.object-literal.key}`.
+要完全配置高亮器，使用
+`getHighlighter` 选项。如果你想配置其他 Shikiji 选项，如 `langs`，这将很有帮助。
 
 ```js
 import { getHighlighter } from 'shikiji';

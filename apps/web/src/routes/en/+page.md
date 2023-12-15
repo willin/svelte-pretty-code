@@ -3,7 +3,7 @@ title: '@svelte-dev/pretty-code'
 desc: 'Beautiful Svelte code blocks for Markdown or MDsveX.'
 ---
 
-> []`@svelte-dev/pretty-code`](https://github.com/willin/svelte-pretty-code) is a MDsveX highlight plugin powered by [rehype-pretty-code](https://github.com/atomiks/rehype-pretty-code) and [shikiji](https://github.com/antfu/shikiji). The syntax highlighter that provides beautiful code blocks for Markdown or MDsveX. It only works on `Block Codes` (not `Inline codes`).
+> [`@svelte-dev/pretty-code`](https://github.com/willin/svelte-pretty-code) is a MDsveX highlight plugin powered by [rehype-pretty-code](https://github.com/atomiks/rehype-pretty-code) and [shikiji](https://github.com/antfu/shikiji). The syntax highlighter that provides beautiful code blocks for Markdown or MDsveX. It only works on `Block Codes` (not `Inline codes`).
 
 ## Editor-Grade Highlighting
 
@@ -34,9 +34,6 @@ export function App({ open, onOpenChange }: Props) {
   );
 }
 ```
-
-> The theme is [Moonlight II](https://github.com/atomiks/moonlight-vscode-theme)
-> with a custom background color.
 
 ## Line Numbers and Line Highlighting
 
@@ -89,85 +86,42 @@ function MyComponent() {
 [0;2m8:38:02 PM[0m [0;36;1m[vite][0m [0;32mhmr update [0;2m/src/App.jsx
 ```
 
-Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
-
 ## Installation
 
 Install via your terminal:
 
 ```shell
-npm install rehype-pretty-code shikiji@^0.8.0
+npm add @svelte-dev/pretty-code
 ```
 
-This package is ESM-only and currently supports `shikiji{:.string}`
-`^0.7.0 || ^0.8.0{:.string}`.
-
-> **Note:** If you need `CJS` support you should use
-> `rehype-pretty-code@0.10.1{:.string}`, which uses Shiki instead of Shikiji
-> ([v0.10.1 docs here](https://github.com/atomiks/rehype-pretty-code/blob/00e5451e3aac7b86f748b01267e255bf345d1550/website/src/app/index.mdx)).
-> To use the latest version in Next.js, ensure your config file is `ESM`:
-> `next.config.mjs`. Here's a full example:
-> [rehype-pretty-code/website/next.config.mjs](https://github.com/atomiks/rehype-pretty-code/blob/master/website/next.config.mjs)
+This package is ESM-only and currently supports `shikiji` `^0.7.0 || ^0.8.0`.
 
 ## Usage
 
 The following works both on the server and on the client.
 
-> `unified@11{:.string}` is used as a dependency.
+> `unified@11` is used as a dependency.
 
-```js /rehypePrettyCode/
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import rehypePrettyCode from 'rehype-pretty-code';
+```js /createHighlighter/
+import { defineMDSveXConfig as defineConfig } from 'mdsvex';
+import { createHighlighter } from '@svelte-dev/pretty-code';
 
-async function main() {
-  const file = await unified()
-    .use(remarkParse)
-    .use(remarkRehype)
-    .use(rehypePrettyCode, {
-      // See Options section below.
+const config = defineConfig({
+  extensions: ['.svelte.md', '.md', '.svx'],
+
+  highlight: {
+    highlighter: createHighlighter({
+      // keepBackground: false,
+      theme: {
+        dark: 'solarized-dark',
+        light: 'solarized-light'
+      }
     })
-    .use(rehypeStringify)
-    .process('`const numbers = [1, 2, 3]{:js}`');
-
-  console.log(String(file));
-}
-
-main();
-```
-
-### MDX
-
-The following example shows how to use this package with Next.js.
-
-```js title="next.config.mjs"
-import fs from 'node:fs';
-import nextMDX from '@next/mdx';
-import rehypePrettyCode from 'rehype-pretty-code';
-
-/** @type {import('rehype-pretty-code').Options} */
-const options = {
-  // See Options section below.
-};
-
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [[rehypePrettyCode, options]]
   }
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = { reactStrictMode: true };
-
-export default withMDX(nextConfig);
+export default config;
 ```
-
-> **Make sure you have disabled** the `mdxRs{:.meta.object-literal.key}` option
-> for Next.js 13 / app dir, as it currently does not support Rehype plugins.
 
 ## Options
 
@@ -176,7 +130,7 @@ interface Options {
   grid?: boolean;
   theme?: Theme | Record<string, Theme>;
   keepBackground?: boolean;
-  defaultLang?: string | { block?: string; inline?: string };
+  defaultLang?: string;
   tokensMap?: Record<string, string>;
   transformers?: ShikijiTransformer[];
   filterMetaString?(str: string): string;
@@ -189,7 +143,7 @@ interface Options {
 }
 ```
 
-### `grid{:.meta.object-literal.key}`
+### `grid`
 
 A grid style is present by default which allows line highlighting to span the
 entire width of a horizontally-scrollable code block.
@@ -202,9 +156,9 @@ const options = {
 };
 ```
 
-### `theme{:.meta.object-literal.key}`
+### `theme`
 
-The default theme is `github-dark-dimmed{:.string}`. Shikiji has a bunch of
+The default theme is `github-dark-dimmed`. Shikiji has a bunch of
 [pre-packaged themes](https://github.com/antfu/shikiji/blob/main/docs/themes.md),
 which can be specified as a plain string:
 
@@ -224,7 +178,7 @@ const options = {
 };
 ```
 
-### `keepBackground{:.meta.object-literal.key}`
+### `keepBackground`
 
 To apply a custom background instead of inheriting the background from the
 theme:
@@ -235,10 +189,7 @@ const options = {
 };
 ```
 
-### `defaultLang{:.meta.object-literal.key}`
-
-When no code language is specified, inline code or code blocks will not be
-themed (nor will the background), which may appear incongruous with others.
+### `defaultLang`
 
 In this case, you can specify a default language:
 
@@ -248,19 +199,7 @@ const options = {
 };
 ```
 
-Or you can also specify default languages for inline code and code blocks
-separately:
-
-```js
-const options = {
-  defaultLang: {
-    block: 'plaintext',
-    inline: 'plaintext'
-  }
-};
-```
-
-### `transformers{:.meta.object-literal.key}`
+### `transformers`
 
 [Transformers](https://github.com/antfu/shikiji#hast-transformers) are a
 Shikiji-native way to manipulate the `hAST` tree of the code blocks and further
@@ -301,7 +240,7 @@ Place a numeric range inside `{}`.
 \```
 ````
 
-The line `<span>{:html}` receives a `data-highlighted-line` attribute to style
+The line `<span>` receives a `data-highlighted-line` attribute to style
 via CSS.
 
 #### Group Highlighted Lines By Id
@@ -315,7 +254,7 @@ differently based on their id.
 \```
 ````
 
-The line `<span>{:html}` receives a `data-highlighted-line-id="<id>"` attribute
+The line `<span>` receives a `data-highlighted-line-id="<id>"` attribute
 to style via CSS.
 
 #### Highlight Chars
@@ -343,7 +282,7 @@ Different segments of chars can also be highlighted:
 \```
 ````
 
-The chars `<span>{:html}` receives a `data-highlighted-chars` attribute to style
+The chars `<span>` receives a `data-highlighted-chars` attribute to style
 via CSS.
 
 To highlight only the third to fifth instances of `carrot`, a numeric range can
@@ -381,7 +320,7 @@ const [age, setAge] = useState(50);
 const [name, setName] = useState('Taylor');
 ```
 
-The chars `<span>{:html}` receives a `data-chars-id="<id>"` attribute to style
+The chars `<span>` receives a `data-chars-id="<id>"` attribute to style
 via CSS.
 
 #### Titles
@@ -442,7 +381,7 @@ If you want to conditionally show them, use `showLineNumbers`:
 \```
 ````
 
-`<code>{:html}` will have attributes `data-line-numbers` and
+`<code>` will have attributes `data-line-numbers` and
 `data-line-numbers-max-digits="n"`.
 
 If you want to start line numbers at a specific number, use
@@ -456,7 +395,7 @@ If you want to start line numbers at a specific number, use
 
 ### Multiple Themes (Dark and Light Mode)
 
-Pass your themes to `theme{:.meta.object-literal.key}`, where the keys represent
+Pass your themes to `theme`, where the keys represent
 the color mode:
 
 ```js
@@ -488,7 +427,7 @@ code[data-theme*=' '] span {
 }
 ```
 
-The `<code>{:html}` and `<pre>{:html}` elements will have the data attribute
+The `<code>` and `<pre>` elements will have the data attribute
 `data-theme="...themes"`, listing each theme value space-separated:
 
 ```html
@@ -523,8 +462,8 @@ const options = {
 ### Custom Highlighter
 
 To completely configure the highlighter, use the
-`getHighlighter{:.entity.name.function}` option. This is helpful if you'd like
-to configure other Shikiji options, such as `langs{:.meta.object-literal.key}`.
+`getHighlighter` option. This is helpful if you'd like
+to configure other Shikiji options, such as `langs`.
 
 ```js
 import { getHighlighter } from 'shikiji';
