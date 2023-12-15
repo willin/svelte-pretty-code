@@ -1,6 +1,6 @@
 {
   "name": "@svelte-dev/pretty-code",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Willin Wang <willin@willin.org> (https://willin.wang/)",
   "description": "Beautiful Svelte code blocks for Markdown or MDsveX.",
   "main": "./dist/index.js",
