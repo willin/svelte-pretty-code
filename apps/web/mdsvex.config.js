@@ -1,3 +1,5 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { defineMDSveXConfig as defineConfig } from 'mdsvex';
 import remarkGfm from 'remark-gfm';
 import remarkGithub from 'remark-github';
@@ -5,10 +7,13 @@ import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { createHighlighter } from '@svelte-dev/pretty-code';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const config = defineConfig({
   extensions: ['.svelte.md', '.md', '.svx'],
   layout: {
-    _: './src/lib/components/mdsvex.svelte'
+    _: path.join(__dirname, './src/lib/components/mdsvex.svelte')
   },
   highlight: {
     highlighter: createHighlighter({

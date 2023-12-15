@@ -39,7 +39,7 @@
           <li>
             <a
               class:active={$locale === langItem}
-              href={`${langItem !== fallbackLng ? `/${langItem}` : ''}${pathname}`}
+              href={`${langItem !== fallbackLng ? `/${langItem}` : ''}${pathname || '/'}`}
               onclick={() => locale.set(langItem)}>
               {#if $t('__flag', {}, langItem) !== '__flag'}
                 <img
